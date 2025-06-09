@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minna no Nihongo Learning Tool (Ch 1-8)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+        
+        .content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .vocab-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .japanese {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .romaji {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .english {
+            font-size: 16px;
+            color: #444;
+        }
+        
+        .grammar-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pattern {
+            font-size: 20px;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .example {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .exercise {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 10px 15px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background: #e0e0e0;
+            border-color: #667eea;
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+        
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .progress {
+            background: #e0e0e0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .flashcard {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+            height: 200px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+        
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+        
+        .fill-blank {
+            display: inline-block;
+            min-width: 100px;
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            margin: 0 5px;
+        }
+        
+        input[type="text"] {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 200px;
+            margin: 5px;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 24px;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>みんなの日本語 - Interactive Learning Tool</h1>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showChapter(1)">Chapter 1</button>
+            <button class="tab" onclick="showChapter(2)">Chapter 2</button>
+            <button class="tab" onclick="showChapter(3)">Chapter 3</button>
+            <button class="tab" onclick="showChapter(4)">Chapter 4</button>
+            <button class="tab" onclick="showChapter(5)">Chapter 5</button>
+            <button class="tab" onclick="showChapter(6)">Chapter 6</button>
+            <button class="tab" onclick="showChapter(7)">Chapter 7</button>
+            <button class="tab" onclick="showChapter(8)">Chapter 8</button>
+        </div>
+        
+        <!-- Chapter 1 Content -->
+        <div class="content active" id="chapter1">
+            <div class="section">
+                <h2>第1課 - Introductions & Nationalities</h2>
+                
+                <h3>Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card" onclick="playAudio('watashi')">
+                        <div class="japanese">わたし</div>
+                        <div class="romaji">watashi</div>
+                        <div class="english">I, me</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">あなた</div>
+                        <div class="romaji">anata</div>
+                        <div class="english">you</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">せんせい</div>
+                        <div class="romaji">sensei</div>
+                        <div class="english">teacher</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">がくせい</div>
+                        <div class="romaji">gakusei</div>
+                        <div class="english">student</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">にほんじん</div>
+                        <div class="romaji">nihonjin</div>
+                        <div class="english">Japanese person</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">アメリカじん</div>
+                        <div class="romaji">amerikajin</div>
+                        <div class="english">American person</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">〜は〜です (wa...desu)</div>
+                    <div>Used to state what something/someone is</div>
+                    <div class="example">
+                        <strong>Example:</strong> わたしは がくせいです。<br>
+                        <em>Watashi wa gakusei desu.</em><br>
+                        I am a student.
+                    </div>
+                    <div class="example">
+                        <strong>Example:</strong> たなかさんは にほんじんです。<br>
+                        <em>Tanaka-san wa nihonjin desu.</em><br>
+                        Mr./Ms. Tanaka is Japanese.
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">〜は〜じゃありません (wa...ja arimasen)</div>
+                    <div>Negative form - is not</div>
+                    <div class="example">
+                        <strong>Example:</strong> わたしは せんせいじゃありません。<br>
+                        <em>Watashi wa sensei ja arimasen.</em><br>
+                        I am not a teacher.
+                    </div>
+                </div>
+                
+                <h3>Practice Exercises</h3>
+                <div class="exercise">
+                    <div class="question">1. Choose the correct particle: わたし＿＿がくせいです。</div>
+                    <div class="options">
+                        <div class="option" onclick="checkAnswer(this, false)">を (wo)</div>
+                        <div class="option" onclick="checkAnswer(this, true)">は (wa)</div>
+                        <div class="option" onclick="checkAnswer(this, false)">が (ga)</div>
+                    </div>
+                </div>
+                
+                <h3>Flashcard Practice</h3>
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-front">
+                        <div class="japanese" style="font-size: 48px;">わたし</div>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="romaji" style="font-size: 24px;">watashi</div>
+                        <div class="english" style="font-size: 20px;">I, me</div>
+                    </div>
+                </div>
+                <button class="btn" onclick="nextFlashcard(1)">Next Card</button>
+            </div>
+        </div>
+        
+        <!-- Chapter 2 Content -->
+        <div class="content" id="chapter2">
+            <div class="section">
+                <h2>第2課 - Demonstratives & Possession</h2>
+                
+                <h3>Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">これ</div>
+                        <div class="romaji">kore</div>
+                        <div class="english">this (thing)</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">それ</div>
+                        <div class="romaji">sore</div>
+                        <div class="english">that (thing)</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">あれ</div>
+                        <div class="romaji">are</div>
+                        <div class="english">that over there</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ほん</div>
+                        <div class="romaji">hon</div>
+                        <div class="english">book</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">かばん</div>
+                        <div class="romaji">kaban</div>
+                        <div class="english">bag</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">じしょ</div>
+                        <div class="romaji">jisho</div>
+                        <div class="english">dictionary</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">これ/それ/あれ は 〜です</div>
+                    <div>This/That/That over there is...</div>
+                    <div class="example">
+                        <strong>Example:</strong> これは ほんです。<br>
+                        <em>Kore wa hon desu.</em><br>
+                        This is a book.
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">〜の (no) - Possession</div>
+                    <div>Shows possession or association</div>
+                    <div class="example">
+                        <strong>Example:</strong> わたしの かばん<br>
+                        <em>Watashi no kaban</em><br>
+                        My bag
+                    </div>
+                    <div class="example">
+                        <strong>Example:</strong> せんせいの ほん<br>
+                        <em>Sensei no hon</em><br>
+                        Teacher's book
+                    </div>
+                </div>
+                
+                <h3>Fill in the Blanks</h3>
+                <div class="exercise">
+                    <div class="question">
+                        <span>これは</span>
+                        <input type="text" id="blank1" placeholder="(my)">
+                        <span>ほんです。</span>
+                        <button class="btn" onclick="checkFillBlank('blank1', 'わたしの')">Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 3 Content -->
+        <div class="content" id="chapter3">
+            <div class="section">
+                <h2>第3課 - Places & Locations</h2>
+                
+                <h3>Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">ここ</div>
+                        <div class="romaji">koko</div>
+                        <div class="english">here</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">そこ</div>
+                        <div class="romaji">soko</div>
+                        <div class="english">there</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">あそこ</div>
+                        <div class="romaji">asoko</div>
+                        <div class="english">over there</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">きょうしつ</div>
+                        <div class="romaji">kyoushitsu</div>
+                        <div class="english">classroom</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">としょかん</div>
+                        <div class="romaji">toshokan</div>
+                        <div class="english">library</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">トイレ</div>
+                        <div class="romaji">toire</div>
+                        <div class="english">toilet</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">ここ/そこ/あそこ は 〜です</div>
+                    <div>Here/There/Over there is...</div>
+                    <div class="example">
+                        <strong>Example:</strong> ここは きょうしつです。<br>
+                        <em>Koko wa kyoushitsu desu.</em><br>
+                        Here is the classroom.
+                    </div>
+                </div>
+                
+                <h3>Practice: Where is it?</h3>
+                <div class="exercise">
+                    <div class="question">としょかんは どこですか。(Where is the library?)</div>
+                    <div class="options">
+                        <div class="option" onclick="checkAnswer(this, true)">あそこです。(It's over there.)</div>
+                        <div class="option" onclick="checkAnswer(this, false)">これです。(It's this.)</div>
+                        <div class="option" onclick="checkAnswer(this, false)">わたしです。(It's me.)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 4 Content -->
+        <div class="content" id="chapter4">
+            <div class="section">
+                <h2>第4課 - Time & Daily Activities</h2>
+                
+                <h3>Time Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">いま</div>
+                        <div class="romaji">ima</div>
+                        <div class="english">now</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">〜じ</div>
+                        <div class="romaji">~ji</div>
+                        <div class="english">o'clock</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ごぜん</div>
+                        <div class="romaji">gozen</div>
+                        <div class="english">a.m.</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ごご</div>
+                        <div class="romaji">gogo</div>
+                        <div class="english">p.m.</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">あさ</div>
+                        <div class="romaji">asa</div>
+                        <div class="english">morning</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ばん</div>
+                        <div class="romaji">ban</div>
+                        <div class="english">evening</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">〜から〜まで (kara...made)</div>
+                    <div>From...to/until...</div>
+                    <div class="example">
+                        <strong>Example:</strong> 9じから 5じまで はたらきます。<br>
+                        <em>Ku-ji kara go-ji made hatarakimasu.</em><br>
+                        I work from 9 to 5.
+                    </div>
+                </div>
+                
+                <h3>Time Practice</h3>
+                <div class="exercise">
+                    <div class="question">What time is it? いま なんじですか。</div>
+                    <input type="text" placeholder="e.g., 3じです" id="timeAnswer">
+                    <button class="btn" onclick="checkTimeAnswer()">Check</button>
+                    <div id="timeResult"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 5 Content -->
+        <div class="content" id="chapter5">
+            <div class="section">
+                <h2>第5課 - Going Places & Transportation</h2>
+                
+                <h3>Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">いきます</div>
+                        <div class="romaji">ikimasu</div>
+                        <div class="english">to go</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">きます</div>
+                        <div class="romaji">kimasu</div>
+                        <div class="english">to come</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">かえります</div>
+                        <div class="romaji">kaerimasu</div>
+                        <div class="english">to return</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">がっこう</div>
+                        <div class="romaji">gakkou</div>
+                        <div class="english">school</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">えき</div>
+                        <div class="romaji">eki</div>
+                        <div class="english">station</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">でんしゃ</div>
+                        <div class="romaji">densha</div>
+                        <div class="english">train</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">〜へ いきます (e ikimasu)</div>
+                    <div>Go to...</div>
+                    <div class="example">
+                        <strong>Example:</strong> がっこうへ いきます。<br>
+                        <em>Gakkou e ikimasu.</em><br>
+                        I go to school.
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">〜で (de) - By means of</div>
+                    <div>Indicates method of transportation</div>
+                    <div class="example">
+                        <strong>Example:</strong> でんしゃで いきます。<br>
+                        <em>Densha de ikimasu.</em><br>
+                        I go by train.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 6 Content -->
+        <div class="content" id="chapter6">
+            <div class="section">
+                <h2>第6課 - Activities & Invitations</h2>
+                
+                <h3>Action Verbs</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">たべます</div>
+                        <div class="romaji">tabemasu</div>
+                        <div class="english">to eat</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">のみます</div>
+                        <div class="romaji">nomimasu</div>
+                        <div class="english">to drink</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">みます</div>
+                        <div class="romaji">mimasu</div>
+                        <div class="english">to see/watch</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ききます</div>
+                        <div class="romaji">kikimasu</div>
+                        <div class="english">to listen</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">よみます</div>
+                        <div class="romaji">yomimasu</div>
+                        <div class="english">to read</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">します</div>
+                        <div class="romaji">shimasu</div>
+                        <div class="english">to do</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">〜を (wo) + verb</div>
+                    <div>Direct object marker</div>
+                    <div class="example">
+                        <strong>Example:</strong> パンを たべます。<br>
+                        <em>Pan wo tabemasu.</em><br>
+                        I eat bread.
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">〜ましょう (mashou)</div>
+                    <div>Let's... (suggestion)</div>
+                    <div class="example">
+                        <strong>Example:</strong> いっしょに たべましょう。<br>
+                        <em>Issho ni tabemashou.</em><br>
+                        Let's eat together.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 7 Content -->
+        <div class="content" id="chapter7">
+            <div class="section">
+                <h2>第7課 - Giving & Receiving</h2>
+                
+                <h3>Vocabulary</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">あげます</div>
+                        <div class="romaji">agemasu</div>
+                        <div class="english">to give</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">もらいます</div>
+                        <div class="romaji">moraimasu</div>
+                        <div class="english">to receive</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">かします</div>
+                        <div class="romaji">kashimasu</div>
+                        <div class="english">to lend</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">かります</div>
+                        <div class="romaji">karimasu</div>
+                        <div class="english">to borrow</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">おしえます</div>
+                        <div class="romaji">oshiemasu</div>
+                        <div class="english">to teach</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ならいます</div>
+                        <div class="romaji">naraimasu</div>
+                        <div class="english">to learn</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">〜に あげます (ni agemasu)</div>
+                    <div>Give to someone</div>
+                    <div class="example">
+                        <strong>Example:</strong> ともだちに プレゼントを あげます。<br>
+                        <em>Tomodachi ni purezento wo agemasu.</em><br>
+                        I give a present to my friend.
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">〜から/に もらいます</div>
+                    <div>Receive from someone</div>
+                    <div class="example">
+                        <strong>Example:</strong> せんせいから ほんを もらいました。<br>
+                        <em>Sensei kara hon wo moraimashita.</em><br>
+                        I received a book from the teacher.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chapter 8 Content -->
+        <div class="content" id="chapter8">
+            <div class="section">
+                <h2>第8課 - Adjectives</h2>
+                
+                <h3>い-Adjectives</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">おおきい</div>
+                        <div class="romaji">ookii</div>
+                        <div class="english">big</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ちいさい</div>
+                        <div class="romaji">chiisai</div>
+                        <div class="english">small</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">あたらしい</div>
+                        <div class="romaji">atarashii</div>
+                        <div class="english">new</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">ふるい</div>
+                        <div class="romaji">furui</div>
+                        <div class="english">old</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">たかい</div>
+                        <div class="romaji">takai</div>
+                        <div class="english">expensive/tall</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">やすい</div>
+                        <div class="romaji">yasui</div>
+                        <div class="english">cheap</div>
+                    </div>
+                </div>
+                
+                <h3>な-Adjectives</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="japanese">きれい（な）</div>
+                        <div class="romaji">kirei (na)</div>
+                        <div class="english">beautiful/clean</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">しずか（な）</div>
+                        <div class="romaji">shizuka (na)</div>
+                        <div class="english">quiet</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">げんき（な）</div>
+                        <div class="romaji">genki (na)</div>
+                        <div class="english">healthy/energetic</div>
+                    </div>
+                    <div class="vocab-card">
+                        <div class="japanese">べんり（な）</div>
+                        <div class="romaji">benri (na)</div>
+                        <div class="english">convenient</div>
+                    </div>
+                </div>
+                
+                <h3>Grammar Patterns</h3>
+                <div class="grammar-box">
+                    <div class="pattern">い-adjective + noun</div>
+                    <div>Directly modifies noun</div>
+                    <div class="example">
+                        <strong>Example:</strong> おおきい くるま<br>
+                        <em>Ookii kuruma</em><br>
+                        Big car
+                    </div>
+                </div>
+                
+                <div class="grammar-box">
+                    <div class="pattern">な-adjective + な + noun</div>
+                    <div>Needs な to modify noun</div>
+                    <div class="example">
+                        <strong>Example:</strong> きれいな へや<br>
+                        <em>Kirei na heya</em><br>
+                        Beautiful room
+                    </div>
+                </div>
+                
+                <h3>Adjective Practice</h3>
+                <div class="exercise">
+                    <div class="question">Choose the correct form: ＿＿＿ ひと (quiet person)</div>
+                    <div class="options">
+                        <div class="option" onclick="checkAnswer(this, false)">しずか</div>
+                        <div class="option" onclick="checkAnswer(this, true)">しずかな</div>
+                        <div class="option" onclick="checkAnswer(this, false)">しずかい</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="score" id="score">Score: 0/0</div>
+    </div>
+    
+    <script>
+        let currentChapter = 1;
+        let score = 0;
+        let totalQuestions = 0;
+        let flashcardIndex = 0;
+        
+        const flashcards = {
+            1: [
+                {jp: 'わたし', romaji: 'watashi', en: 'I, me'},
+                {jp: 'あなた', romaji: 'anata', en: 'you'},
+                {jp: 'せんせい', romaji: 'sensei', en: 'teacher'},
+                {jp: 'がくせい', romaji: 'gakusei', en: 'student'},
+                {jp: 'にほんじん', romaji: 'nihonjin', en: 'Japanese person'}
+            ]
+        };
+        
+        function showChapter(num) {
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById('chapter' + num).classList.add('active');
+            document.querySelectorAll('.tab')[num - 1].classList.add('active');
+            currentChapter = num;
+        }
+        
+        function checkAnswer(element, isCorrect) {
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return;
+            }
+            
+            totalQuestions++;
+            if (isCorrect) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('incorrect');
+            }
+            updateScore();
+            updateProgress();
+        }
+        
+        function checkFillBlank(inputId, correctAnswer) {
+            const input = document.getElementById(inputId);
+            const userAnswer = input.value.trim();
+            
+            totalQuestions++;
+            if (userAnswer === correctAnswer) {
+                input.style.borderColor = '#28a745';
+                input.style.backgroundColor = '#d4edda';
+                score++;
+            } else {
+                input.style.borderColor = '#dc3545';
+                input.style.backgroundColor = '#f8d7da';
+            }
+            updateScore();
+            updateProgress();
+        }
+        
+        function checkTimeAnswer() {
+            const input = document.getElementById('timeAnswer');
+            const result = document.getElementById('timeResult');
+            const answer = input.value.trim();
+            
+            totalQuestions++;
+            if (answer.includes('じ') && answer.includes('です')) {
+                result.textContent = 'Correct! 正解！';
+                result.style.color = '#28a745';
+                score++;
+            } else {
+                result.textContent = 'Try again. Use the format: [number]じです';
+                result.style.color = '#dc3545';
+            }
+            updateScore();
+            updateProgress();
+        }
+        
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        function nextFlashcard(chapter) {
+            const cards = flashcards[chapter];
+            if (cards) {
+                flashcardIndex = (flashcardIndex + 1) % cards.length;
+                const card = cards[flashcardIndex];
+                const flashcard = document.querySelector(`#chapter${chapter} .flashcard`);
+                
+                flashcard.classList.remove('flipped');
+                setTimeout(() => {
+                    flashcard.querySelector('.flashcard-front .japanese').textContent = card.jp;
+                    flashcard.querySelector('.flashcard-back .romaji').textContent = card.romaji;
+                    flashcard.querySelector('.flashcard-back .english').textContent = card.en;
+                }, 300);
+            }
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${score}/${totalQuestions}`;
+        }
+        
+        function updateProgress() {
+            const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+        
+        function playAudio(word) {
+            // Audio functionality would require actual audio files
+            console.log('Playing audio for:', word);
+        }
+    </script>
+</body>
+</html>
